@@ -1,11 +1,12 @@
-body{
+body {
     width: 100vw;
     height: 100vh;
     flex-flow: column;
 }
-textarea{
-    border: 1px solid rgba(0,0,0,.2);
-    background-color: rgba(100,100,100,.3);
+
+textarea {
+    border: 1px solid rgba(0, 0, 0, .2);
+    background-color: rgba(100, 100, 100, .3);
 }
 
 .wrap {
@@ -14,31 +15,36 @@ textarea{
     padding: 20px;
     /* display:flex; */
     /* flex-direction:column; */
-  }
+}
 
-.editable-div{
+.editable-div {
     border: 1px solid rgba(156, 50, 50, 0.233);
     font: medium -moz-fixed;
     font: -webkit-small-control;
     overflow-x: hidden;
     padding: 2px;
-    flex:1;
-    display:flex;
-    flex-direction:column;
+    flex: 1;
+    display: inline-flex;
+    flex-direction: column;
+    float: left;
 }
 
-.draggable{
+.draggable {
     /* resize: both; */
     border: 1px solid blanchedalmond;
     border-radius: 5px;
     overflow: hidden;
     padding: 1px;
-    display:flex;
-    flex-direction:column;
+    display: flex;
+    flex-direction: column;
     position: absolute;
 }
 
-.handle{
+.handle {
     text-align: center;
     border-bottom: .5px solid blanchedalmond
+}
+
+.link-button {
+    width: min-content;
 }

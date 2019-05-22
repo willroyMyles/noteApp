@@ -35,7 +35,7 @@
                 if (window.getSelection) {
                     var sel = window.getSelection();
                     if (sel == '' || sel === undefined) return;
-                    console.log(sel.anchorNode.parentNode.className);
+                    console.log(sel);
                     if (sel.anchorNode.parentNode.className == 'editable-div') {
                         return sel.toString();
                     } else return undefined;
@@ -57,11 +57,17 @@
                     if (sel.rangeCount) {
                         range = sel.getRangeAt(0);
                         range.deleteContents();
-                        var a = document.createElement('button');
+                        var a = document.createElement('a');
                         var linkText = document.createTextNode(replacementText);
                         a.appendChild(linkText);
                         a.title = replacementText;
-                        a.onclick = justPrint();
+                        a.href = "";
+                        a.onclick = () => {
+                            justPrint();
+                        };
+                        a.classList.add('link-button');
+                        a.contentEditable = false;
+
                         range.insertNode(a);
                     }
                 } else if (document.selection && document.selection.createRange) {
@@ -112,7 +118,7 @@
         <div id="light" class="ui-widget-content draggable">
             <div class="handle">...</div>
             <div contenteditable="true" class="editable-div">
-                <a href="justPrint();"></a>
+                Immutable Editor State: The Draft.js model is built with immutable-js, offering an API with functional state updates and aggressively leveraging data persistence for scalable memory us
             </div>
         </div>
     </div>
