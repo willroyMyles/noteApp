@@ -3,9 +3,20 @@
   "version": "1.0.0",
   "description": "Note taking app to compete against evernote and other note taking apps. will track ideas more effeciently. mind node and one note had a marriage.",
   "main": "index.js",
+  "engines": {
+    "node": "10"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Willroy Myles",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@shopify/draggable": "^1.0.0-beta.8",
+    "displacejs": "^1.2.4",
+    "ejs": "^2.6.1",
+    "express": "^4.17.0",
+    "jquery": "^3.4.1",
+    "nodemon": "^1.19.0"
+  }
 }

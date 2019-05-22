@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+
+    <script src="js/displace.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="js/jqui/ui/jquery.ui.core.js"></script>
+  <script src="js/jqui/ui/jquery.ui.widget.js"></script>
+  <script src="js/jqui/ui/jquery.ui.mouse.js"></script>
+  <script src="js/jqui/ui/jquery.ui.draggable.js"></script>
+  <script src="js/jqui/jquery-collision.min.js"></script>
+  <script src="js/jqui/jquery-ui-draggable-collision.min.js"></script>
+  <script>
+
+   
+  $( function() {
+  
+
+    $('.editable-div').mouseup(function() {
+        var text = getSelectedText();
+        if(text == '') return;
+       console.log(getSelectedText());
+    });
+
+    function getSelectedText() {
+        if (window.getSelection) {
+            return window.getSelection().toString();
+        } else if (document.selection) {
+            return document.selection.createRange().text;
+        }
+        return '';
+    }
+
+    const el = document.querySelector('.draggable');
+    const options = {
+	    constrain: true,
+        handle: document.querySelector('.handle'),
+        
+    };
+var dis = window.displacejs(el, options);
+    
+  });
+  </script>
+
+<style>
+    .draggable { width: 150px; height: 150px; padding: 0.5em; }
+</style>
+
+</head>
+<body>
+   <div class="wrap">
+        <div id="heavy" class="ui-widget-content draggable">
+                <div class="handle">...</div>
+                <div contenteditable="true" class="editable-div"></div>
+            </div>
+            <div id="ligh" class="ui-widget-content draggable">
+            </div>
+   </div>
+</body>
+</html>

@@ -1,0 +1,43 @@
+body{
+    width: 100vw;
+    height: 100vh;
+    flex-flow: column;
+}
+textarea{
+    border: 1px solid rgba(0,0,0,.2);
+    background-color: rgba(100,100,100,.3);
+}
+
+.wrap {
+    height: 100vh;
+    width: 100%;
+    padding: 20px;
+    display:flex;
+    flex-direction:column;
+  }
+
+.editable-div{
+    border: 1px solid rgba(156, 50, 50, 0.233);
+    font: medium -moz-fixed;
+    font: -webkit-small-control;
+    overflow: auto;
+    padding: 2px;
+    flex:1;
+    display:flex;
+    flex-direction:column;
+}
+
+.draggable{
+    resize: both;
+    border: 1px solid blanchedalmond;
+    border-radius: 5px;
+    overflow: auto;
+    padding: 0px;
+    display:flex;
+    flex-direction:column;
+}
+
+.handle{
+    text-align: center;
+    border-bottom: .5px solid blanchedalmond
+}
