@@ -4,14 +4,6 @@ app.use(express.static('./public'));
 app.set('view engine', 'ejs');
 
 
-// const el = document.querySelector('.draggable');
-//     const options = {
-// 	    constrain: true,
-// 	    handle: document.querySelector('.handle'),
-// 	    relativeTo: document.querySelector('.box-1')
-//     };
-// var dis = displace(el, options);
-
 let port = process.env.PORT;
 if (port == null || port == "") {
   port = 8000;

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,63 +8,114 @@
     <title>Document</title>
 
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 
     <script src="js/displace.min.js"></script>
 
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <script src="js/jqui/ui/jquery.ui.core.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- <script src="js/jqui/ui/jquery.ui.core.js"></script>
   <script src="js/jqui/ui/jquery.ui.widget.js"></script>
   <script src="js/jqui/ui/jquery.ui.mouse.js"></script>
   <script src="js/jqui/ui/jquery.ui.draggable.js"></script>
   <script src="js/jqui/jquery-collision.min.js"></script>
-  <script src="js/jqui/jquery-ui-draggable-collision.min.js"></script>
-  <script>
+  <script src="js/jqui/jquery-ui-draggable-collision.min.js"></script> -->
+    <script>
+        $(function() {
 
-   
-  $( function() {
-  
 
-    $('.editable-div').mouseup(function() {
-        var text = getSelectedText();
-        if(text == '') return;
-       console.log(getSelectedText());
-    });
+            $('.editable-div').mouseup(function() {
+                var text = getSelectedText();
+                if (text == '' || text === undefined) return;
+                replaceSelectedText(text);
+            });
 
-    function getSelectedText() {
-        if (window.getSelection) {
-            return window.getSelection().toString();
-        } else if (document.selection) {
-            return document.selection.createRange().text;
+            function getSelectedText() {
+                if (window.getSelection) {
+                    var sel = window.getSelection();
+                    if (sel == '' || sel === undefined) return;
+                    console.log(sel.anchorNode.parentNode.className);
+                    if (sel.anchorNode.parentNode.className == 'editable-div') {
+                        return sel.toString();
+                    } else return undefined;
+                    //return window.getSelection().toString();
+                } else if (document.selection) {
+                    return document.selection.createRange().text;
+                }
+                return '';
+            }
+
+            function justPrint() {
+                console.log("just printing some text");
+            }
+
+            function replaceSelectedText(replacementText) {
+                var sel, range;
+                if (window.getSelection) {
+                    sel = window.getSelection();
+                    if (sel.rangeCount) {
+                        range = sel.getRangeAt(0);
+                        range.deleteContents();
+                        var a = document.createElement('button');
+                        var linkText = document.createTextNode(replacementText);
+                        a.appendChild(linkText);
+                        a.title = replacementText;
+                        a.onclick = justPrint();
+                        range.insertNode(a);
+                    }
+                } else if (document.selection && document.selection.createRange) {
+                    range = document.selection.createRange();
+                    range.text = replacementText;
+                }
+            }
+
+            var drag = $('.draggable');
+            $('.draggable').resizable();
+            drag.draggable();
+            drag.mousedown(() => {
+                drag.draggable("enable");
+            });
+            drag.mouseup(() => {
+                drag.draggable("disable");
+            });
+
+            var editDiv = $('.editable-div');
+            editDiv.mousedown(() => {
+                drag.draggable("disable");
+            });
+
+            var handle = $('.handle');
+            handle.mousedown(() => {
+                drag.draggable("enable");
+            });
+
+        });
+    </script>
+
+    <style>
+        .draggable {
+            width: 150px;
+            height: 150px;
+            padding: 0.5em;
         }
-        return '';
-    }
-
-    const el = document.querySelector('.draggable');
-    const options = {
-	    constrain: true,
-        handle: document.querySelector('.handle'),
-        
-    };
-var dis = window.displacejs(el, options);
-    
-  });
-  </script>
-
-<style>
-    .draggable { width: 150px; height: 150px; padding: 0.5em; }
-</style>
+    </style>
 
 </head>
+
 <body>
-   <div class="wrap">
-        <div id="heavy" class="ui-widget-content draggable">
-                <div class="handle">...</div>
-                <div contenteditable="true" class="editable-div"></div>
+    <div class="wrap">
+        <div id="heavy" class="ui-widget-content draggable resizable">
+            <div class="handle" enable="false">...</div>
+            <div contenteditable="true" class="editable-div"></div>
+        </div>
+        <div id="light" class="ui-widget-content draggable">
+            <div class="handle">...</div>
+            <div contenteditable="true" class="editable-div">
+                <a href="justPrint();"></a>
             </div>
-            <div id="ligh" class="ui-widget-content draggable">
-            </div>
-   </div>
+        </div>
+    </div>
 </body>
+
 </html>
