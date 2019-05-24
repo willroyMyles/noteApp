@@ -47,7 +47,8 @@
     box-sizing: border-box;
     overflow-x: auto;
     min-height: 60px;
-    text-align: left
+    text-align: left;
+    height: 100%;
 }
 
 .fr-box.fr-basic.fr-rtl .fr-element {
