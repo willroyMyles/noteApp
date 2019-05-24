@@ -9,22 +9,27 @@ textarea {
     background-color: rgba(100, 100, 100, .3);
 }
 
+a {
+    display: inline;
+}
+
 .wrap {
-    height: 100vh;
+    height: 90vh;
     width: 100%;
     padding: 20px;
+    overflow: scroll;
     /* display:flex; */
     /* flex-direction:column; */
 }
 
 .editable-div {
-    border: 1px solid rgba(156, 50, 50, 0.233);
+    border: 1px solid rgba(156, 50, 50, 0);
     font: medium -moz-fixed;
     font: -webkit-small-control;
     overflow-x: hidden;
     padding: 2px;
     flex: 1;
-    display: inline-flex;
+    display: inline;
     flex-direction: column;
     float: left;
 }
@@ -47,4 +52,14 @@ textarea {
 
 .link-button {
     width: min-content;
+    background-color: rgb(251, 255, 41);
+    border-radius: 8px;
+    text-decoration-line: none;
+    padding: 1px 4px;
+}
+
+footer {
+    position: absolute;
+    margin-bottom: 0px;
+    align-content: center;
 }

@@ -10,8 +10,16 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
+    <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.0.0/quill.js"></script>
 
     <script src="js/displace.min.js"></script>
+
+    <!-- Include Editor style. -->
+    <link href='/css/froala_editor.min.css' rel='stylesheet' type='text/css' />
+
+    <!-- Include JS file. -->
+    <script type='text/javascript' src='/js/froalajs/froala_editor.min.js'></script>
 
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -23,6 +31,23 @@
   <script src="js/jqui/jquery-ui-draggable-collision.min.js"></script> -->
     <script>
         $(function() {
+
+
+            // var editor = new Quill('.editable-div', {
+            //     modules: {
+            //         toolbar: '#toolbar'
+            //     },
+            //     theme: 'snow'
+            // });
+
+            new FroalaEditor('.editable-div', {
+                toolbarContainer: '#toolbar',
+            });
+
+            document.querySelectorAll('.editable-div').forEach(Element => {
+
+            });
+
 
 
             $('.editable-div').mouseup(function() {
@@ -113,15 +138,22 @@
     <div class="wrap">
         <div id="heavy" class="ui-widget-content draggable resizable">
             <div class="handle" enable="false">...</div>
-            <div contenteditable="true" class="editable-div"></div>
+            <div class="editable-div"></div>
         </div>
         <div id="light" class="ui-widget-content draggable">
             <div class="handle">...</div>
-            <div contenteditable="true" class="editable-div">
+            <div class="editable-div">
                 Immutable Editor State: The Draft.js model is built with immutable-js, offering an API with functional state updates and aggressively leveraging data persistence for scalable memory us
             </div>
         </div>
     </div>
+
+    <footer>
+        <div id="toolbar">
+
+        </div>
+
+    </footer>
 </body>
 
 </html>

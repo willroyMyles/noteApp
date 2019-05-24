@@ -16,6 +16,8 @@
     "displacejs": "^1.2.4",
     "ejs": "^2.6.1",
     "express": "^4.17.0",
-    "nodemon": "^1.19.0"
+    "froala-editor": "^3.0.0-beta.2-1",
+    "nodemon": "^1.19.0",
+    "slate": "^0.47.3"
   }
 }
