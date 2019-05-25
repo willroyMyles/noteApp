@@ -7,6 +7,8 @@
         "node": "10"
     },
     "scripts": {
+        "start": "node index.js",
+        "logs": "heroku logs --tail -a watson-utech-assistant",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "Willroy Myles",
