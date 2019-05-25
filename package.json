@@ -13,9 +13,12 @@
     "license": "ISC",
     "dependencies": {
         "@shopify/draggable": "^1.0.0-beta.8",
+        "body-parser": "^1.19.0",
         "displacejs": "^1.2.4",
         "ejs": "^2.6.1",
         "express": "^4.17.0",
+        "hotkeys-js": "^3.6.10",
+        "jquery-deserialize": "^2.0.0-rc1",
         "nodemon": "^1.19.0",
         "slate": "^0.47.3"
     }

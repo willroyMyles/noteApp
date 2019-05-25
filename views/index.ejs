@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="html">
 
 <head>
     <meta charset="UTF-8">
@@ -11,159 +11,110 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 
     <!-- Include JS file. -->
-
-
+    <script src="/js/text_functions.js"></script>
+    <script src="/js/mousetrap.js"></script>
     <script type='text/javascript' src='/js/froalajs/froala_editor.pkgd.min.js'></script>
     <script type='text/javascript' src='/js/froalajs/plugins/link.min.js'></script>
-
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://unpkg.com/hotkeys-js/dist/hotkeys.min.js"></script>
 
 
     <!-- Include Editor style. -->
     <link href='/css/froala_editor.min.css' rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 
 
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <script>
-        $(function() {
+        var editor;
 
-            var editor;
+        function setUpEditor() {
+            if (!editor) editor = setup_froala();
+        }
 
-            var currentMousePos = {
-                x: -1,
-                y: -1
-            };
-            $(document).mousemove(function(event) {
-                currentMousePos.x = event.pageX;
-                currentMousePos.y = event.pageY;
-            });
+        function removeFooter() {
+            var footer = document.getElementById('toolbar');
+            console.log($('#toolbar'));
+            $('#toolbar').find(':first-child').remove();
+        }
 
-            // set up froala
-            FroalaEditor.POPUP_TEMPLATES["customPlugin.popup"] = '[_BUTTONS_][_CUSTOM_LAYER_]';
-            Object.assign(FroalaEditor.DEFAULTS, {
-                popupButtons: ['bold', 'underline', 'insertLink'],
-            });
-            FroalaEditor.PLUGINS.customPlugin = function(editor) {
-                // Create custom popup.
-                function initPopup() {
-                    // Popup buttons.
-                    var popup_buttons = '';
+        function removeClasses() {
+            rm('.fr-box');
+            rm('.fr-basic');
+            rm('.fr-wrapper');
+            rm('.fr-quick-insert');
+            rm('.second-toolber');
+            rm('.fr-element');
+            rm('.fr-view');
+            rm('.fr-box');
+            rm('.fr-box');
 
-                    // Create the list of buttons.
-                    if (editor.opts.popupButtons.length > 1) {
-                        popup_buttons += '<div class="fr-buttons">';
-                        popup_buttons += editor.button.buildList(editor.opts.popupButtons);
-                        popup_buttons += '</div>';
-
-                    }
-
-                    // Load popup template.
-                    var template = {
-                        buttons: popup_buttons,
-                        custom_layer: '<div class="custom-layer">Hello World!</div>'
-                    };
-
-                    // Create popup.
-                    var $popup = editor.popups.create('customPlugin.popup', template);
-
-                    return $popup;
-                }
-
-                // Show the popup
-                function showPopup() {
-                    // Get the popup object defined above.
-                    var $popup = editor.popups.get('customPlugin.popup');
-
-                    // If popup doesn't exist then create it.
-                    // To improve performance it is best to create the popup when it is first needed
-                    // and not when the editor is initialized.
-                    if (!$popup) $popup = initPopup();
-
-                    // Set the editor toolbar as the popup's container.
-                    editor.popups.setContainer('customPlugin.popup', editor.$tb);
-
-                    // This will trigger the refresh event assigned to the popup.
-                    // editor.popups.refresh('customPlugin.popup');
-
-                    // This custom popup is opened by pressing a button from the editor's toolbar.
-                    // Get the button's object in order to place the popup relative to it.
-                    // var $btn = editor.$tb.find('.fr-command[data-cmd="myButton"]');
-
-                    // // Set the popup's position.
-                    // var left = $btn.offset().left + $btn.outerWidth() / 2;
-                    // var top = $btn.offset().top + (editor.opts.toolbarBottom ? 10 : $btn.outerHeight() - 10);
-
-                    // left = currentMousePos.x;
-                    // top = currentMousePos.y;
-
-                    // Show the custom popup.
-                    // The button's outerHeight is required in case the popup needs to be displayed above it.
-                    editor.popups.show('customPlugin.popup', currentMousePos.x, currentMousePos.y, 10);
-                }
-
-                // Hide the custom popup.
-                function hidePopup() {
-                    editor.popups.hide('customPlugin.popup');
-                }
-
-                // Methods visible outside the plugin.
-                return {
-                    showPopup: showPopup,
-                    hidePopup: hidePopup
-                }
+            function rm(class_name) {
+                $(class_name).removeClass(class_name);
+                var cln = class_name.replace('.', '');
+                $(class_name).each((index, elemet) => {
+                    elemet.classList.remove(cln);
+                });
             }
+        }
 
+        function removeEditor() {
 
-            FroalaEditor.DefineIcon('popupClose', {
-                NAME: 'times',
-                SVG_KEY: 'Link'
+            if (editor.length != undefined)
+                editor.forEach(ed => {
+                    console.log(ed);
+                    ed.destroy();
+                    ed = null;
+                });
+
+            else editor.destroy();
+            editor = null;
+        }
+
+        function setUpDraggingAndResizing() {
+            var drag = $('.draggable');
+            drag.resizable();
+            drag.draggable();
+            drag.mousedown(() => {
+                drag.draggable("enable");
             });
-            FroalaEditor.RegisterCommand('popupClose', {
-                title: 'Close',
-                undo: false,
-                focus: false,
-                callback: function() {
-                    this.customPlugin.hidePopup();
-                }
-            });
-
-
-            editor = new FroalaEditor('.editable-div', {
-                toolbarContainer: '#toolbar',
-                // linkText: true,
-                // theme: 'dark',
-                // pluginsEnabled: ['customPlugin'],
-                // events: {
-                //     contentChanged: function() {
-                //         console.log('content changed');
-                //     }
-                // },
-
-                toolbarButtons: {
-                    'moreText': {
-                        'buttons': ['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', 'textColor', 'backgroundColor', 'inlineClass', 'inlineStyle', 'clearFormatting']
-                    },
-                    'moreParagraph': {
-                        'buttons': ['alignLeft', 'alignCenter', 'formatOLSimple', 'alignRight', 'alignJustify', 'formatOL', 'formatUL', 'paragraphFormat', 'paragraphStyle', 'lineHeight', 'outdent', 'indent', 'quote']
-                    },
-                    'moreMisc': {
-                        'buttons': ['undo', 'redo', 'fullscreen', 'print', 'getPDF', 'spellChecker', 'selectAll', 'html', 'help'],
-                        'align': 'right',
-                        'buttonsVisible': 2
-                    }
-                }
-
+            drag.mouseup(() => {
+                drag.draggable("disable");
             });
 
-            document.querySelectorAll('.editable-div').forEach(Element => {
-
+            var editDiv = $('.editable-div');
+            editDiv.mousedown(() => {
+                drag.draggable("disable");
             });
 
+            var handle = $('.handle');
+            handle.mousedown(() => {
+                drag.draggable("enable");
+            });
+        }
 
+
+
+        function onPageLoad() {
+            var body = document.getElementById('body').innerHTML;
+            var refreshNeeded = false;
+
+            Mousetrap.bind('ctrl+s', function(e) {
+                body = document.getElementById('body').innerHTML;
+            });
+            Mousetrap.bind('ctrl+r', function(e) {
+                var body1 = document.getElementById('body');
+                body1.innerHTML = body;
+                removeEditor();
+                removeFooter();
+                removeClasses();
+                setUpEditor();
+                setUpDraggingAndResizing();
+                return true;
+            });
 
             $('.editable-div').mouseup(function(e) {
                 var text = getSelectedText();
@@ -190,51 +141,14 @@
                 console.log("just printing some text");
             }
 
-            function replaceSelectedText(replacementText) {
-                var sel, range;
-                if (window.getSelection) {
-                    sel = window.getSelection();
-                    if (sel.rangeCount) {
-                        range = sel.getRangeAt(0);
-                        range.deleteContents();
-                        var a = document.createElement('a');
-                        var linkText = document.createTextNode(replacementText);
-                        a.appendChild(linkText);
-                        a.title = replacementText;
-                        a.href = "";
-                        a.onclick = () => {
-                            justPrint();
-                        };
-                        a.classList.add('link-button');
-                        a.contentEditable = false;
 
-                        range.insertNode(a);
-                    }
-                } else if (document.selection && document.selection.createRange) {
-                    range = document.selection.createRange();
-                    range.text = replacementText;
-                }
-            }
 
-            var drag = $('.draggable');
-            $('.draggable').resizable();
-            drag.draggable();
-            drag.mousedown(() => {
-                drag.draggable("enable");
-            });
-            drag.mouseup(() => {
-                drag.draggable("disable");
-            });
+        }
 
-            var editDiv = $('.editable-div');
-            editDiv.mousedown(() => {
-                drag.draggable("disable");
-            });
-
-            var handle = $('.handle');
-            handle.mousedown(() => {
-                drag.draggable("enable");
-            });
+        $(function() {
+            setUpDraggingAndResizing();
+            setUpEditor();
+            onPageLoad();
 
         });
     </script>
@@ -249,16 +163,20 @@
 
 </head>
 
-<body>
+<body id="body">
     <div class="wrap">
-        <div id="heavy" class="ui-widget-content draggable resizable">
-            <div class="handle" enable="false">...</div>
-            <div class="editable-div"></div>
-        </div>
+
         <div id="light" class="ui-widget-content draggable">
             <div class="handle">...</div>
             <div class="editable-div">
                 <p><a href="">Immutable</a></p> Editor State: The Draft.js model is built with immutable-js, offering an API with functional state updates and aggressively leveraging data persistence for scalable memory us
+            </div>
+        </div>
+
+        <div id="ght" class="ui-widget-content draggable">
+            <div class="handle">...</div>
+            <div class="editable-div">
+                offering an API with functional state updates and aggressively leveraging data persistence for scalable memory us
             </div>
         </div>
     </div>
