@@ -31,20 +31,23 @@
     <script>
         var editor;
 
-        function setUpEditor() {
-            if (!editor) editor = setup_froala();
+        async function setUpEditor() {
+            if (!editor) editor = await setup_froala();
+            removeRedBanner();
         }
 
         function removeRedBanner() {
             var obj = $('.fr-wrapper');
-
+            console.log(obj);
             if (obj.length != undefined) {
                 obj.each(ele => {
                     var child = ele.find(':first-child');
+                    console.log(child);
                     if (child.classList.length == 0) child.remove();
                 });
             } else {
                 var child = obj.find(':first-child');
+                console.log(child);
                 if (child.classList.length == 0) child.remove();
             }
         }
@@ -161,8 +164,6 @@
             setUpDraggingAndResizing();
             setUpEditor();
             onPageLoad();
-            removeRedBanner();
-
         });
     </script>
 
