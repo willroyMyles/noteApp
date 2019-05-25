@@ -35,9 +35,21 @@
             if (!editor) editor = setup_froala();
         }
 
+        function removeRedBanner() {
+            var obj = $('.fr-wrapper');
+
+            if (obj.length != undefined) {
+                obj.each(ele => {
+                    var child = ele.find(':first-child');
+                    if (child.classList.length == 0) child.remove();
+                });
+            } else {
+                var child = obj.find(':first-child');
+                if (child.classList.length == 0) child.remove();
+            }
+        }
+
         function removeFooter() {
-            var footer = document.getElementById('toolbar');
-            console.log($('#toolbar'));
             $('#toolbar').find(':first-child').remove();
         }
 
@@ -149,9 +161,7 @@
             setUpDraggingAndResizing();
             setUpEditor();
             onPageLoad();
-
-            console.log($("a[href^='https://www.froala.com']"));
-
+            removeRedBanner();
 
         });
     </script>
