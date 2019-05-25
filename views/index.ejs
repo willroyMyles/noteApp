@@ -24,149 +24,6 @@
     <link href='/css/froala_editor.min.css' rel='stylesheet' type='text/css' />
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
-
-
-
-    <script>
-        var editor;
-
-        async function setUpEditor() {
-            if (!editor) editor = await setup_froala();
-            removeRedBanner();
-        }
-
-        function removeRedBanner() {
-            var obj = $('.fr-wrapper');
-            console.log(obj);
-            if (obj.length != undefined) {
-                obj.each(ele => {
-                    var child = ele.find(':first-child');
-                    console.log(child);
-                    if (child.classList.length == 0) child.remove();
-                });
-            } else {
-                var child = obj.find(':first-child');
-                console.log(child);
-                if (child.classList.length == 0) child.remove();
-            }
-        }
-
-        function removeFooter() {
-            $('#toolbar').find(':first-child').remove();
-        }
-
-        function removeClasses() {
-            rm('.fr-box');
-            rm('.fr-basic');
-            rm('.fr-wrapper');
-            rm('.fr-quick-insert');
-            rm('.second-toolber');
-            rm('.fr-element');
-            rm('.fr-view');
-            rm('.fr-box');
-            rm('.fr-box');
-
-            function rm(class_name) {
-                $(class_name).removeClass(class_name);
-                var cln = class_name.replace('.', '');
-                $(class_name).each((index, elemet) => {
-                    elemet.classList.remove(cln);
-                });
-            }
-        }
-
-        function removeEditor() {
-
-            if (editor.length != undefined)
-                editor.forEach(ed => {
-                    console.log(ed);
-                    ed.destroy();
-                    ed = null;
-                });
-
-            else editor.destroy();
-            editor = null;
-        }
-
-        function setUpDraggingAndResizing() {
-            var drag = $('.draggable');
-            drag.resizable();
-            drag.draggable();
-            drag.mousedown(() => {
-                drag.draggable("enable");
-            });
-            drag.mouseup(() => {
-                drag.draggable("disable");
-            });
-
-            var editDiv = $('.editable-div');
-            editDiv.mousedown(() => {
-                drag.draggable("disable");
-            });
-
-            var handle = $('.handle');
-            handle.mousedown(() => {
-                drag.draggable("enable");
-            });
-        }
-
-
-
-        function onPageLoad() {
-            var body = document.getElementById('body').innerHTML;
-            var refreshNeeded = false;
-
-            Mousetrap.bind('ctrl+s', function(e) {
-                body = document.getElementById('body').innerHTML;
-            });
-            Mousetrap.bind('ctrl+r', function(e) {
-                var body1 = document.getElementById('body');
-                body1.innerHTML = body;
-                removeEditor();
-                removeFooter();
-                removeClasses();
-                setUpEditor();
-                setUpDraggingAndResizing();
-                return true;
-            });
-
-            $('.editable-div').mouseup(function(e) {
-                var text = getSelectedText();
-                if (text == '' || text === undefined) return;
-                $(this)['context']['data-froala.editor'].customPlugin.showPopup();
-                //replaceSelectedText(text);
-            });
-
-            function getSelectedText() {
-                if (window.getSelection) {
-                    var sel = window.getSelection();
-                    if (sel == '' || sel === undefined) return;
-                    if (sel.anchorNode.parentNode.className == '') {
-                        return sel.toString();
-                    } else return undefined;
-                    //return window.getSelection().toString();
-                } else if (document.selection) {
-                    return document.selection.createRange().text;
-                }
-                return '';
-            }
-
-            function justPrint() {
-                console.log("just printing some text");
-            }
-
-
-
-        }
-
-        $(function() {
-            setUpDraggingAndResizing();
-            setUpEditor();
-            onPageLoad();
-        });
-    </script>
-
     <style>
         .draggable {
             width: 150px;
@@ -200,5 +57,148 @@
 
     </footer>
 </body>
+
+<script>
+    var editor;
+
+    async function setUpEditor() {
+        if (!editor) editor = await setup_froala();
+        setTimeout(() => {
+            removeRedBanner();
+        }, 1000);
+    }
+
+    function removeRedBanner() {
+
+        var obj = $(".fr-wrapper");
+        console.log($(".fr-wrapper"));
+        if (obj.length != undefined) {
+            obj.each((num, ele) => {
+                var child = ele.firstChild;
+                console.log(child);
+                if (child.classList.length == 0) child.remove();
+            });
+        } else {
+            var child = obj.find(':first-child');
+            console.log(child);
+            if (child.classList.length == 0) child.remove();
+        }
+    }
+
+    function removeFooter() {
+        $('#toolbar').find(':first-child').remove();
+    }
+
+    function removeClasses() {
+        rm('.fr-box');
+        rm('.fr-basic');
+        rm('.fr-wrapper');
+        rm('.fr-quick-insert');
+        rm('.second-toolber');
+        rm('.fr-element');
+        rm('.fr-view');
+        rm('.fr-box');
+        rm('.fr-box');
+
+        function rm(class_name) {
+            $(class_name).removeClass(class_name);
+            var cln = class_name.replace('.', '');
+            $(class_name).each((index, elemet) => {
+                elemet.classList.remove(cln);
+            });
+        }
+    }
+
+    function removeEditor() {
+
+        if (editor.length != undefined)
+            editor.forEach(ed => {
+                console.log(ed);
+                ed.destroy();
+                ed = null;
+            });
+
+        else editor.destroy();
+        editor = null;
+    }
+
+    function setUpDraggingAndResizing() {
+        var drag = $('.draggable');
+        drag.resizable();
+        drag.draggable();
+        drag.mousedown(() => {
+            drag.draggable("enable");
+        });
+        drag.mouseup(() => {
+            drag.draggable("disable");
+        });
+
+        var editDiv = $('.editable-div');
+        editDiv.mousedown(() => {
+            drag.draggable("disable");
+        });
+
+        var handle = $('.handle');
+        handle.mousedown(() => {
+            drag.draggable("enable");
+        });
+    }
+
+
+
+    function onPageLoad() {
+        var body = document.getElementById('body').innerHTML;
+        var refreshNeeded = false;
+
+        Mousetrap.bind('ctrl+s', function(e) {
+            body = document.getElementById('body').innerHTML;
+        });
+        Mousetrap.bind('ctrl+r', function(e) {
+            var body1 = document.getElementById('body');
+            body1.innerHTML = body;
+            removeEditor();
+            removeFooter();
+            removeClasses();
+            setUpEditor();
+            setUpDraggingAndResizing();
+            return true;
+        });
+
+        $('.editable-div').mouseup(function(e) {
+            var text = getSelectedText();
+            if (text == '' || text === undefined) return;
+            $(this)['context']['data-froala.editor'].customPlugin.showPopup();
+            //replaceSelectedText(text);
+        });
+
+        function getSelectedText() {
+            if (window.getSelection) {
+                var sel = window.getSelection();
+                if (sel == '' || sel === undefined) return;
+                if (sel.anchorNode.parentNode.className == '') {
+                    return sel.toString();
+                } else return undefined;
+                //return window.getSelection().toString();
+            } else if (document.selection) {
+                return document.selection.createRange().text;
+            }
+            return '';
+        }
+
+        function justPrint() {
+            console.log("just printing some text");
+        }
+
+
+
+    }
+
+    $(function() {
+        setUpDraggingAndResizing();
+        setUpEditor();
+        onPageLoad();
+    });
+</script>
+
 
 </html>

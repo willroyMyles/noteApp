@@ -1,4 +1,4 @@
-function setup_froala() {
+function setup_froala(callback) {
 
     return new Promise((resolve, reject) => {
 
@@ -166,6 +166,7 @@ function setup_froala() {
 
         });
 
+        if (callback) callback();
         resolve(editor);
     });
 
