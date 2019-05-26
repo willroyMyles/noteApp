@@ -1,4 +1,4 @@
-function setup_froala(callback) {
+function setup_froala(id) {
 
     return new Promise((resolve, reject) => {
 
@@ -109,64 +109,129 @@ function setup_froala(callback) {
         });
 
         var editor;
-        editor = new FroalaEditor('.editable-div', {
-            toolbarContainer: '#toolbar',
-            saveUrl: "this",
+        var target;
 
-            toolbarButtons: {
-                'moreText': {
-                    'buttons': ['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', 'textColor', 'backgroundColor', 'inlineClass', 'inlineStyle', 'clearFormatting']
+        if (id != undefined) target = $('#' + id).find('.editable-div')['0'];
+        else target = document.getElementsByClassName('editable-div');
+
+        if (target.length == undefined)
+            editor = new FroalaEditor(target, {
+                toolbarContainer: '#toolbar',
+                saveUrl: "this",
+
+                toolbarButtons: {
+                    'moreText': {
+                        'buttons': ['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', 'textColor', 'backgroundColor', 'inlineClass', 'inlineStyle', 'clearFormatting']
+                    },
+                    'moreParagraph': {
+                        'buttons': ['alignLeft', 'alignCenter', 'formatOLSimple', 'alignRight', 'alignJustify', 'formatOL', 'formatUL', 'paragraphFormat', 'paragraphStyle', 'lineHeight', 'outdent', 'indent', 'quote']
+                    },
+                    'moreMisc': {
+                        'buttons': ['undo', 'redo', 'fullscreen', 'print', 'getPDF', 'spellChecker', 'selectAll', 'html', 'help'],
+                        'align': 'right',
+                        'buttonsVisible': 2
+                    }
                 },
-                'moreParagraph': {
-                    'buttons': ['alignLeft', 'alignCenter', 'formatOLSimple', 'alignRight', 'alignJustify', 'formatOL', 'formatUL', 'paragraphFormat', 'paragraphStyle', 'lineHeight', 'outdent', 'indent', 'quote']
-                },
-                'moreMisc': {
-                    'buttons': ['undo', 'redo', 'fullscreen', 'print', 'getPDF', 'spellChecker', 'selectAll', 'html', 'help'],
-                    'align': 'right',
-                    'buttonsVisible': 2
-                }
-            },
-            events: {
-                'link.bad': function(original_href) {
-                    // Do something here.
-                    // this is the editor instance.
-                    console.log(this);
-                    console.log("bad link");
-                },
-                'link.beforeInsert': function(link, text, attrs) {
-                    // Do something here.
-                    // this is the editor instance.
-                    console.log(this);
-                    console.log(link);
-                },
-                'save.before': function() {
-                    // Before save request is made.
-                },
+                events: {
+                    'link.bad': function(original_href) {
+                        // Do something here.
+                        // this is the editor instance.
+                        console.log(this);
+                        console.log("bad link");
+                    },
+                    'link.beforeInsert': function(link, text, attrs) {
+                        // Do something here.
+                        // this is the editor instance.
+                        console.log(this);
+                        console.log(link);
+                    },
+                    'save.before': function() {
+                        // Before save request is made.
+                    },
 
-                'save.after': function() {
-                    // After successfully save request.
+                    'save.after': function() {
+                        // After successfully save request.
+                    },
+
+                    'save.error': function() {
+                        // Do something here.
+                    },
                 },
 
-                'save.error': function() {
-                    // Do something here.
-                },
-            },
+                // Set the save param.
+                saveParam: 'content',
 
-            // Set the save param.
-            saveParam: 'content',
+                // Set the save URL.
+                saveURL: 'http://localhost:8000/save',
 
-            // Set the save URL.
-            saveURL: 'http://localhost:8000/save',
+                // HTTP request type.
+                saveMethod: 'POST',
 
-            // HTTP request type.
-            saveMethod: 'POST',
+                // Additional save params.
+                saveParams: { id: 'editable-div' },
 
-            // Additional save params.
-            saveParams: { id: 'editable-div' },
+            });
+        else {
+            $(target).each((index, element) => {
+                editor = new FroalaEditor(element, {
+                    toolbarContainer: '#toolbar',
+                    saveUrl: "this",
 
-        });
+                    toolbarButtons: {
+                        'moreText': {
+                            'buttons': ['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', 'textColor', 'backgroundColor', 'inlineClass', 'inlineStyle', 'clearFormatting']
+                        },
+                        'moreParagraph': {
+                            'buttons': ['alignLeft', 'alignCenter', 'formatOLSimple', 'alignRight', 'alignJustify', 'formatOL', 'formatUL', 'paragraphFormat', 'paragraphStyle', 'lineHeight', 'outdent', 'indent', 'quote']
+                        },
+                        'moreMisc': {
+                            'buttons': ['undo', 'redo', 'fullscreen', 'print', 'getPDF', 'spellChecker', 'selectAll', 'html', 'help'],
+                            'align': 'right',
+                            'buttonsVisible': 2
+                        }
+                    },
+                    events: {
+                        'link.bad': function(original_href) {
+                            // Do something here.
+                            // this is the editor instance.
+                            console.log(this);
+                            console.log("bad link");
+                        },
+                        'link.beforeInsert': function(link, text, attrs) {
+                            // Do something here.
+                            // this is the editor instance.
+                            console.log(this);
+                            console.log(link);
+                        },
+                        'save.before': function() {
+                            // Before save request is made.
+                        },
 
-        if (callback) callback();
+                        'save.after': function() {
+                            // After successfully save request.
+                        },
+
+                        'save.error': function() {
+                            // Do something here.
+                        },
+                    },
+
+                    // Set the save param.
+                    saveParam: 'content',
+
+                    // Set the save URL.
+                    saveURL: 'http://localhost:8000/save',
+
+                    // HTTP request type.
+                    saveMethod: 'POST',
+
+                    // Additional save params.
+                    saveParams: { id: 'editable-div' },
+
+                });
+            })
+        }
+
         resolve(editor);
     });
 

@@ -61,6 +61,8 @@
 
 <script>
     var editor;
+    var body = document.getElementById('body').innerHTML;
+
 
     async function setUpEditor() {
         if (!editor) editor = await setup_froala();
@@ -96,26 +98,30 @@
         rm('.fr-view');
 
         $('.ui-resizable-handle').remove();
+        $('.fr-placeholder').remove();
+        $('.second-toolbar').remove();
+    }
 
-        function rm(class_name) {
-            $(class_name).removeClass(class_name);
-            var cln = class_name.replace('.', '');
-            $(class_name).each((index, elemet) => {
-                elemet.classList.remove(cln);
-            });
-        }
+    function rm(class_name) {
+        $(class_name).removeClass(class_name);
+        var cln = class_name.replace('.', '');
+        $(class_name).each((index, elemet) => {
+            elemet.classList.remove(cln);
+        });
     }
 
     function removeEditor() {
+        console.log(editor);
+        if (editor) {
+            if (editor.length != undefined)
+                editor.forEach(ed => {
+                    //ed.destroy();
+                    ed = null;
+                });
 
-        if (editor.length != undefined)
-            editor.forEach(ed => {
-                ed.destroy();
-                ed = null;
-            });
-
-        else editor.destroy();
-        editor = null;
+            else //editor.destroy();
+                editor = null;
+        }
     }
 
     function setUpDraggingAndResizing() {
@@ -155,22 +161,26 @@
 
     }
 
+    function createNewNode(id) {
+        $('<div id="' + id + '" style="left:' + currentMousePos.x + 'px; top:' + currentMousePos.y + 'px;" class="ui-widget-content draggable"><div class="handle">...</div><div class="editable-div"></div></div>').appendTo($('#contentHolder'));
+        editor = setup_froala(id);
+        setUpDraggingAndResizing();
+    }
+
 
 
     function onPageLoad() {
-        var body = document.getElementById('body').innerHTML;
         var bareBones = document.getElementById('body').innerHTML;
         var refreshNeeded = false;
 
         $('#contentHolder').dblclick(() => {
             var id = $('.draggable').length + 1;
-            $('<div id="' + id + '" style="left:' + currentMousePos.x + 'px; top:' + currentMousePos.y + 'px;" class="ui-widget-content draggable"><div class="handle">...</div><div class="editable-div"></div></div>').appendTo($('#contentHolder'));
-            Mousetrap.trigger('ctrl+s');
-            Mousetrap.trigger('ctrl+r');
+            createNewNode(id);
 
         });
 
         Mousetrap.bind('ctrl+d', (e) => {
+            removeEditor();
             removeClasses();
         });
 
@@ -180,6 +190,7 @@
         Mousetrap.bind('ctrl+r', function(e) {
             var body1 = document.getElementById('body');
             body1.innerHTML = body;
+            //debugger;
             removeEditor();
             //removeFooter();
             removeClasses();
@@ -220,7 +231,7 @@
 
     $(function() {
         setUpDraggingAndResizing();
-        setUpEditor();
+        //setUpEditor();
         onPageLoad();
 
         $(document).mousemove((e) => {
