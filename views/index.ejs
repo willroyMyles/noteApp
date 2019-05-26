@@ -9,6 +9,8 @@
 
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href='/css/froala_editor.min.css' rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
     <!-- Include JS file. -->
     <script src="/js/text_functions.js"></script>
@@ -21,30 +23,29 @@
 
 
     <!-- Include Editor style. -->
-    <link href='/css/froala_editor.min.css' rel='stylesheet' type='text/css' />
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
     <style>
         .draggable {
             width: 150px;
             height: 150px;
-            padding: 0.5em;
+            padding: 0.1em;
         }
     </style>
 
 </head>
 
 <body id="body">
-    <div class="wrap">
+    <div id="contentHolder" class="wrap">
 
-        <div id="light" class="ui-widget-content draggable">
+        <div id="1" class="ui-widget-content draggable">
             <div class="handle">...</div>
             <div class="editable-div">
                 <p><a href="">Immutable</a></p> Editor State: The Draft.js model is built with immutable-js, offering an API with functional state updates and aggressively leveraging data persistence for scalable memory us
             </div>
         </div>
 
-        <div id="ght" class="ui-widget-content draggable">
+        <div id="2" class="ui-widget-content draggable">
             <div class="handle">...</div>
             <div class="editable-div">
                 offering an API with functional state updates and aggressively leveraging data persistence for scalable memory us
@@ -71,16 +72,13 @@
     function removeRedBanner() {
 
         var obj = $(".fr-wrapper");
-        console.log($(".fr-wrapper"));
         if (obj.length != undefined) {
             obj.each((num, ele) => {
                 var child = ele.firstChild;
-                console.log(child);
                 if (child.classList.length == 0) child.remove();
             });
         } else {
             var child = obj.find(':first-child');
-            console.log(child);
             if (child.classList.length == 0) child.remove();
         }
     }
@@ -90,6 +88,8 @@
     }
 
     function removeClasses() {
+
+
         rm('.fr-box');
         rm('.fr-basic');
         rm('.fr-wrapper');
@@ -97,8 +97,12 @@
         rm('.second-toolber');
         rm('.fr-element');
         rm('.fr-view');
-        rm('.fr-box');
-        rm('.fr-box');
+        rm('.ui-resizable-s');
+        rm('.ui-resizable-e');
+        rm('.ui-resizable-se');
+        rm('.ui-resizable-handle');
+        rm('.ui-icon');
+        rm('.ui-icon-gripsmall-diagonal-se');
 
         function rm(class_name) {
             $(class_name).removeClass(class_name);
@@ -113,7 +117,6 @@
 
         if (editor.length != undefined)
             editor.forEach(ed => {
-                console.log(ed);
                 ed.destroy();
                 ed = null;
             });
@@ -124,24 +127,41 @@
 
     function setUpDraggingAndResizing() {
         var drag = $('.draggable');
-        drag.resizable();
-        drag.draggable();
-        drag.mousedown(() => {
-            drag.draggable("enable");
-        });
-        drag.mouseup(() => {
-            drag.draggable("disable");
-        });
+        var ed = $('.editable-div');
+        if (drag.length != undefined)
+            drag.each((number, element) => {
+                var ele = $(element);
+                ele.draggable();
+                ele.resizable();
 
-        var editDiv = $('.editable-div');
-        editDiv.mousedown(() => {
-            drag.draggable("disable");
-        });
+                ele.mousedown((e) => {
+                    drag.each((number, element) => {
+                        $(element).removeClass('zindex');
+                    });
+                    ele.draggable('enable');
+                    ele.addClass('zindex');
+                })
+            });
+        else {
+            drag.draggable();
+            drag.resizable();
+            drag.mousedown((e) => {
+                drag.draggable('enable');
+            })
+        }
 
-        var handle = $('.handle');
-        handle.mousedown(() => {
-            drag.draggable("enable");
-        });
+        if (ed.length != undefined)
+            ed.each((number, element) => {
+                var ele = $(element);
+
+                ele.mousedown((e) => {
+                    ele.parent().draggable('disable');
+                })
+
+                console.log(ele.parent());
+            });
+
+
     }
 
 
@@ -149,6 +169,14 @@
     function onPageLoad() {
         var body = document.getElementById('body').innerHTML;
         var refreshNeeded = false;
+
+        $('#contentHolder').ondblclick = function d() {
+            console.log('doubleClicked');
+            $('<div id="1" class="ui-widget-content draggable"><div class="handle">...</div><div class="editable-div"></div></div>').appendTo($('#contentHolder'));
+            Mousetrap.trigger('ctrl+s');
+            Mousetrap.trigger('ctrl+r');
+
+        };
 
         Mousetrap.bind('ctrl+s', function(e) {
             body = document.getElementById('body').innerHTML;

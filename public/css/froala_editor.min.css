@@ -211,8 +211,7 @@ iframe.fr-iframe {
 
 .fr-box.fr-basic .fr-wrapper {
     background: #FFF;
-    border: 1px solid #CCCCCC;
-    border-bottom-color: #efefef;
+    border: 1px solid rgb(110, 110, 110);
     border-radius: 5px;
     top: 0;
     left: 0
