@@ -38,7 +38,7 @@
 <body id="body">
     <div id="contentHolder" class="wrap">
 
-        <div id="1" class="ui-widget-content draggable">
+        <!-- <div id="1" class="ui-widget-content draggable">
             <div class="handle">...</div>
             <div class="editable-div">
                 <p><a href="">Immutable</a></p> Editor State: The Draft.js model is built with immutable-js, offering an API with functional state updates and aggressively leveraging data persistence for scalable memory us
@@ -50,7 +50,7 @@
             <div class="editable-div">
                 offering an API with functional state updates and aggressively leveraging data persistence for scalable memory us
             </div>
-        </div>
+        </div> -->
     </div>
 
     <footer id="toolbar">
@@ -64,9 +64,6 @@
 
     async function setUpEditor() {
         if (!editor) editor = await setup_froala();
-        setTimeout(() => {
-            removeRedBanner();
-        }, 1000);
     }
 
     function removeRedBanner() {
@@ -97,12 +94,8 @@
         rm('.second-toolber');
         rm('.fr-element');
         rm('.fr-view');
-        rm('.ui-resizable-s');
-        rm('.ui-resizable-e');
-        rm('.ui-resizable-se');
-        rm('.ui-resizable-handle');
-        rm('.ui-icon');
-        rm('.ui-icon-gripsmall-diagonal-se');
+
+        $('.ui-resizable-handle').remove();
 
         function rm(class_name) {
             $(class_name).removeClass(class_name);
@@ -166,13 +159,19 @@
 
     function onPageLoad() {
         var body = document.getElementById('body').innerHTML;
+        var bareBones = document.getElementById('body').innerHTML;
         var refreshNeeded = false;
 
         $('#contentHolder').dblclick(() => {
-            $('<div id="1" style="left:' + currentMousePos.x + 'px; top:' + currentMousePos.y + 'px;" class="ui-widget-content draggable"><div class="handle">...</div><div class="editable-div"></div></div>').appendTo($('#contentHolder'));
+            var id = $('.draggable').length + 1;
+            $('<div id="' + id + '" style="left:' + currentMousePos.x + 'px; top:' + currentMousePos.y + 'px;" class="ui-widget-content draggable"><div class="handle">...</div><div class="editable-div"></div></div>').appendTo($('#contentHolder'));
             Mousetrap.trigger('ctrl+s');
             Mousetrap.trigger('ctrl+r');
 
+        });
+
+        Mousetrap.bind('ctrl+d', (e) => {
+            removeClasses();
         });
 
         Mousetrap.bind('ctrl+s', function(e) {
@@ -182,7 +181,7 @@
             var body1 = document.getElementById('body');
             body1.innerHTML = body;
             removeEditor();
-            removeFooter();
+            //removeFooter();
             removeClasses();
             setUpEditor();
             setUpDraggingAndResizing();
