@@ -157,8 +157,6 @@
                 ele.mousedown((e) => {
                     ele.parent().draggable('disable');
                 })
-
-                console.log(ele.parent());
             });
 
 
@@ -170,13 +168,12 @@
         var body = document.getElementById('body').innerHTML;
         var refreshNeeded = false;
 
-        $('#contentHolder').ondblclick = function d() {
-            console.log('doubleClicked');
-            $('<div id="1" class="ui-widget-content draggable"><div class="handle">...</div><div class="editable-div"></div></div>').appendTo($('#contentHolder'));
+        $('#contentHolder').dblclick(() => {
+            $('<div id="1" style="left:' + currentMousePos.x + 'px; top:' + currentMousePos.y + 'px;" class="ui-widget-content draggable"><div class="handle">...</div><div class="editable-div"></div></div>').appendTo($('#contentHolder'));
             Mousetrap.trigger('ctrl+s');
             Mousetrap.trigger('ctrl+r');
 
-        };
+        });
 
         Mousetrap.bind('ctrl+s', function(e) {
             body = document.getElementById('body').innerHTML;
@@ -189,6 +186,7 @@
             removeClasses();
             setUpEditor();
             setUpDraggingAndResizing();
+            onPageLoad();
             return true;
         });
 
@@ -225,7 +223,17 @@
         setUpDraggingAndResizing();
         setUpEditor();
         onPageLoad();
+
+        $(document).mousemove((e) => {
+            currentMousePos.x = e.pageX;
+            currentMousePos.y = e.pageY;
+        })
     });
+
+    var currentMousePos = {
+        x: -1,
+        y: -1
+    };
 </script>
 
 
