@@ -308,6 +308,11 @@ iframe.fr-iframe {
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"
 }
 
+.fr-popup,
+.fr-toolbar {
+    z-index: 10000;
+}
+
 .fr-toolbar .fr-btn-wrap,
 .fr-popup .fr-btn-wrap,
 .fr-modal .fr-btn-wrap {

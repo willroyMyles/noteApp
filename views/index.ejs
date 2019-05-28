@@ -38,14 +38,15 @@
 <body id="body">
     <div id="contentHolder" class="wrap">
 
-        <!-- <div id="1" class="ui-widget-content draggable">
+        <div id="1" class="ui-widget-content draggable">
             <div class="handle">...</div>
             <div class="editable-div">
+                <input type="text" name="" id="title 1" class="title">
                 <p><a href="">Immutable</a></p> Editor State: The Draft.js model is built with immutable-js, offering an API with functional state updates and aggressively leveraging data persistence for scalable memory us
             </div>
         </div>
 
-        <div id="2" class="ui-widget-content draggable">
+        <!--<div id="2" class="ui-widget-content draggable">
             <div class="handle">...</div>
             <div class="editable-div">
                 offering an API with functional state updates and aggressively leveraging data persistence for scalable memory us
@@ -162,7 +163,7 @@
     }
 
     function createNewNode(id) {
-        $('<div id="' + id + '" style="left:' + currentMousePos.x + 'px; top:' + currentMousePos.y + 'px;" class="ui-widget-content draggable"><div class="handle">...</div><div class="editable-div"></div></div>').appendTo($('#contentHolder'));
+        $('<div id="' + id + '" style="left:' + currentMousePos.x + 'px; top:' + currentMousePos.y + 'px;" class="ui-widget-content draggable"><div class="handle">...</div><input type="text" name="" id="title ' + id + '" class="title" placeholder="Title..."><div class="editable-div"></div></div>').appendTo($('#contentHolder'));
         editor = setup_froala(id);
         setUpDraggingAndResizing();
     }
