@@ -211,7 +211,7 @@ iframe.fr-iframe {
 
 .fr-box.fr-basic .fr-wrapper {
     background: #FFF;
-    border: 1px solid rgb(110, 110, 110);
+    border: 0px solid rgb(110, 110, 110);
     border-radius: 5px;
     top: 0;
     left: 0
@@ -318,7 +318,8 @@ iframe.fr-iframe {
 .fr-modal .fr-btn-wrap {
     float: left;
     white-space: nowrap;
-    position: relative
+    position: relative;
+    z-index: 20;
 }
 
 .fr-toolbar .fr-btn-wrap.fr-hidden,

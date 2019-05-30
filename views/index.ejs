@@ -7,14 +7,18 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>TakeNote</title>
 
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" /> -->
     <link href='/css/froala_editor.min.css' rel='stylesheet' type='text/css' />
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
     <!-- Include JS file. -->
     <script src="/js/text_functions.js"></script>
     <script src="/js/mousetrap.js"></script>
+    <script src="/js/morphbar.js"></script>
+    <script src="/js/objects.js"></script>
     <script type='text/javascript' src='/js/froalajs/froala_editor.pkgd.min.js'></script>
     <script type='text/javascript' src='/js/froalajs/plugins/link.min.js'></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -36,22 +40,24 @@
 </head>
 
 <body id="body">
+    <header class="header">
+        <div class="button-toolbar">
+            .
+        </div>
+        <div class="morph-toolbar">
+
+        </div>
+    </header>
     <div id="contentHolder" class="wrap">
 
-        <div id="1" class="ui-widget-content draggable">
+        <!-- <div id="1" class="ui-widget-content draggable">
             <div class="handle">...</div>
             <div class="editable-div">
                 <input type="text" name="" id="title 1" class="title">
                 <p><a href="">Immutable</a></p> Editor State: The Draft.js model is built with immutable-js, offering an API with functional state updates and aggressively leveraging data persistence for scalable memory us
             </div>
-        </div>
-
-        <!--<div id="2" class="ui-widget-content draggable">
-            <div class="handle">...</div>
-            <div class="editable-div">
-                offering an API with functional state updates and aggressively leveraging data persistence for scalable memory us
-            </div>
         </div> -->
+
     </div>
 
     <footer id="toolbar">
@@ -61,12 +67,11 @@
 </body>
 
 <script>
-    var editor;
-    var body = document.getElementById('body').innerHTML;
-
+    body = document.getElementById('body').innerHTML;;
 
     async function setUpEditor() {
-        if (!editor) editor = await setup_froala();
+        editor = await console.log(setup_froala());
+        console.log(editor);
     }
 
     function removeRedBanner() {
@@ -112,15 +117,14 @@
     }
 
     function removeEditor() {
-        console.log(editor);
+        // console.log(editor);
         if (editor) {
             if (editor.length != undefined)
                 editor.forEach(ed => {
-                    //ed.destroy();
                     ed = null;
                 });
 
-            else //editor.destroy();
+            else
                 editor = null;
         }
     }
@@ -165,8 +169,49 @@
     function createNewNode(id) {
         $('<div id="' + id + '" style="left:' + currentMousePos.x + 'px; top:' + currentMousePos.y + 'px;" class="ui-widget-content draggable"><div class="handle">...</div><input type="text" name="" id="title ' + id + '" class="title" placeholder="Title..."><div class="editable-div"></div></div>').appendTo($('#contentHolder'));
         editor = setup_froala(id);
+        editorList.push(editor);
+        objectList.push($('#' + id));
         setUpDraggingAndResizing();
+        bindMouseUp(id)
     }
+
+    function bindMouseUp(id) {
+        $('#' + id).find('.editable-div').mouseup(function(e) {
+            var text = getSelectedText();
+            console.log(text);
+            if (text == '' || text === undefined) {
+                if (showing) removeSelectionButton();
+                return;
+            }
+            createLinkButton();
+            $(this)['context']['data-froala.editor'].customPlugin.showPopup();
+            //replaceSelectedText(text);
+        });
+
+        $('#' + id).find('.editable-div').focusout(function(e) {
+            if (showing && clickButton) removeSelectionButton();
+        });
+    }
+
+
+
+    function getSelectedText() {
+        if (window.getSelection) {
+            var sel = window.getSelection();
+            if (sel == '' || sel === undefined) return;
+            if (sel.anchorNode.parentNode.className == '') {
+                return sel.toString();
+            } else return undefined;
+        } else if (document.selection) {
+            return document.selection.createRange().text;
+        }
+        return '';
+    }
+
+    function justPrint() {
+        console.log("just printing some text");
+    }
+
 
 
 
@@ -181,8 +226,8 @@
         });
 
         Mousetrap.bind('ctrl+d', (e) => {
-            removeEditor();
-            removeClasses();
+            console.log(objectList);
+            console.log(editorList);
         });
 
         Mousetrap.bind('ctrl+s', function(e) {
@@ -198,36 +243,8 @@
             setUpEditor();
             setUpDraggingAndResizing();
             onPageLoad();
-            return true;
+            //return true;
         });
-
-        $('.editable-div').mouseup(function(e) {
-            var text = getSelectedText();
-            if (text == '' || text === undefined) return;
-            $(this)['context']['data-froala.editor'].customPlugin.showPopup();
-            //replaceSelectedText(text);
-        });
-
-        function getSelectedText() {
-            if (window.getSelection) {
-                var sel = window.getSelection();
-                if (sel == '' || sel === undefined) return;
-                if (sel.anchorNode.parentNode.className == '') {
-                    return sel.toString();
-                } else return undefined;
-                //return window.getSelection().toString();
-            } else if (document.selection) {
-                return document.selection.createRange().text;
-            }
-            return '';
-        }
-
-        function justPrint() {
-            console.log("just printing some text");
-        }
-
-
-
     }
 
     $(function() {

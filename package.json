@@ -22,6 +22,8 @@
         "hotkeys-js": "^3.6.10",
         "jquery-deserialize": "^2.0.0-rc1",
         "nodemon": "^1.19.0",
-        "slate": "^0.47.3"
+        "slate": "^0.47.3",
+        "sqlite": "^3.0.3",
+        "sqlite3": "^4.0.8"
     }
 }

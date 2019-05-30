@@ -4,11 +4,7 @@ body {
     flex-flow: column;
     overflow: scroll;
     align-content: center;
-}
-
-textarea {
-    border: 1px solid rgba(0, 0, 0, .2);
-    background-color: rgba(100, 100, 100, .3);
+    background-color: aliceblue;
 }
 
 #toolbar {
@@ -36,7 +32,7 @@ textarea {
 }
 
 .editable-div {
-    border: 3px solid rgba(107, 107, 107, 0);
+    border: 0px solid rgba(107, 107, 107, 0);
     font: medium -moz-fixed;
     font: -webkit-small-control;
     overflow: hidden;
@@ -48,20 +44,20 @@ textarea {
 }
 
 .draggable {
-    border: .5px solid rgba(0, 0, 0, 0.055);
+    border: 2.5px solid rgb(182, 199, 219);
     border-radius: 5px;
     overflow: hidden;
     padding: 0px;
     display: flex;
     flex-direction: column;
     position: absolute;
-    background-color: rgba(233, 233, 233, 0.829);
-    filter: drop-shadow(0px 0px 5px #55555507);
+    background-color: rgb(255, 255, 255);
+    filter: drop-shadow(0px 0px 5px #5555552f);
 }
 
 .handle {
     text-align: center;
-    border-bottom: .5px solid blanchedalmond
+    border-bottom: .5px solid rgba(255, 235, 205, 0)
 }
 
 .link-button {
@@ -73,13 +69,54 @@ textarea {
     padding: 1px 4px;
 }
 
+header {
+    position: absolute;
+    width: 70vw;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0px;
+    padding: 3px;
+}
+
+.button-toolbar {
+    width: 68%;
+    float: left;
+}
+
+.morph-toolbar {
+    width: 30%;
+    right: -10px;
+    float: right;
+}
+
+.button-toolbar,
+.morph-toolbar {
+    background-color: white;
+    border-radius: 5px;
+    filter: drop-shadow(0px 0px 5px #5555552f);
+    padding: 5px;
+}
+
+.icon {
+    padding: 15px;
+    background-color: transparent;
+    transition: 1s;
+    border-radius: 5px;
+    display: inline;
+}
+
+.icon:hover {
+    background-color: rgba(168, 168, 168, 0.507);
+}
+
 footer {
     position: absolute;
     width: 70vw;
-    margin-bottom: 0px;
+    /* margin-bottom: -48px; */
     align-content: center;
     margin: 0 auto;
-    /* transform: translate(50%, 0%); */
     left: 0;
     right: 0;
     margin-left: auto;
@@ -92,11 +129,11 @@ footer {
 }
 
 .fr-wrapper {
-    border: 5px solid rgba(0, 0, 0, 0.425);
+    border: 0px solid rgba(0, 0, 0, 0.425);
 }
 
 .zindex {
-    z-index: 1000;
+    z-index: 10;
     filter: drop-shadow(0px 0px 3px #4d4d4d56);
 }
 
