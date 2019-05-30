@@ -19,6 +19,7 @@
     <script src="/js/mousetrap.js"></script>
     <script src="/js/morphbar.js"></script>
     <script src="/js/objects.js"></script>
+    <script src="/js/index.js"></script>
     <script type='text/javascript' src='/js/froalajs/froala_editor.pkgd.min.js'></script>
     <script type='text/javascript' src='/js/froalajs/plugins/link.min.js'></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -42,13 +43,12 @@
 <body id="body">
     <header class="header">
         <div class="button-toolbar">
-            .
-        </div>
-        <div class="morph-toolbar">
-
+            <select name="select" id="head_select" class="select">
+                <option value="origin">origin</option>
+            </select>
         </div>
     </header>
-    <div id="contentHolder" class="wrap">
+    <div id='' class="wrap">
 
         <!-- <div id="1" class="ui-widget-content draggable">
             <div class="handle">...</div>
@@ -93,8 +93,6 @@
     }
 
     function removeClasses() {
-
-
         rm('.fr-box');
         rm('.fr-basic');
         rm('.fr-wrapper');
@@ -167,7 +165,7 @@
     }
 
     function createNewNode(id) {
-        $('<div id="' + id + '" style="left:' + currentMousePos.x + 'px; top:' + currentMousePos.y + 'px;" class="ui-widget-content draggable"><div class="handle">...</div><input type="text" name="" id="title ' + id + '" class="title" placeholder="Title..."><div class="editable-div"></div></div>').appendTo($('#contentHolder'));
+        $('<div id="' + id + '" style="left:' + currentMousePos.x + 'px; top:' + currentMousePos.y + 'px;" class="ui-widget-content draggable"><div class="handle">...</div><input type="text" name="" id="title ' + id + '" class="title" placeholder="Title..."><div class="editable-div"></div></div>').appendTo($('#' + currentPage));
         editor = setup_froala(id);
         editorList.push(editor);
         objectList.push($('#' + id));
@@ -177,8 +175,13 @@
 
     function bindMouseUp(id) {
         $('#' + id).find('.editable-div').mouseup(function(e) {
+
+            //get the correct editor
+            currentEditor = editorList[id - 1];
+
+
             var text = getSelectedText();
-            console.log(text);
+            //console.log(text);
             if (text == '' || text === undefined) {
                 if (showing) removeSelectionButton();
                 return;
@@ -190,6 +193,11 @@
 
         $('#' + id).find('.editable-div').focusout(function(e) {
             if (showing && clickButton) removeSelectionButton();
+        });
+
+        $('#' + id).find('.editable-div').dblclick((e) => {
+            e.stopImmediatePropagation();
+            e.stopPropagation();
         });
     }
 
@@ -219,7 +227,7 @@
         var bareBones = document.getElementById('body').innerHTML;
         var refreshNeeded = false;
 
-        $('#contentHolder').dblclick(() => {
+        $('#' + currentPage).dblclick(() => {
             var id = $('.draggable').length + 1;
             createNewNode(id);
 
@@ -247,9 +255,25 @@
         });
     }
 
+    function insertPage(pageName) {
+        var add;
+        if (!pageList.includes(pageName)) {
+            pageList.push(pageName);
+            add = true;
+        } else {
+            add = false;
+        }
+
+        if (add) {
+            var select = $('#head_select');
+            $('<option value="' + pageName + '">' + pageName + '</option>').appendTo(select);
+        }
+
+    }
+
     $(function() {
+        $('.wrap')['0'].id = currentPage;
         setUpDraggingAndResizing();
-        //setUpEditor();
         onPageLoad();
 
         $(document).mousemove((e) => {

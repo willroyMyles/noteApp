@@ -4,6 +4,9 @@ module.exports = async() => {
     const sqlite3 = require('sqlite3').verbose();
     var db;
 
+    var obj = require('/js/objects.js');
+    console.log(obj);
+
 
     if (fs.existsSync('./database.db')) {
         // exists

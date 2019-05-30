@@ -4,7 +4,7 @@ function setup_froala(id) {
     FroalaEditor.POPUP_TEMPLATES["customPlugin.popup"] = '[_BUTTONS_][_CUSTOM_LAYER_]';
     FroalaEditor.POPUP_TEMPLATES["customLink.popup"] = '[_BUTTONS_][_CUSTOM_LAYER_]';
     Object.assign(FroalaEditor.DEFAULTS, {
-        popupButton: ['makeLink', 'underline', 'insertLink'],
+        popupButton: ['makeLink', 'editLink', 'insertLink', 'editLink'],
         linkButtons: ['openLink', 'editLink', 'unlink'],
     });
 
@@ -66,6 +66,7 @@ function setup_froala(id) {
     }
 
 
+
     FroalaEditor.DefineIcon('makeLink', {
         NAME: 'times',
         SVG_KEY: 'Link'
@@ -101,7 +102,7 @@ function setup_froala(id) {
                     'buttons': ['alignLeft', 'alignCenter', 'formatOLSimple', 'alignRight', 'alignJustify', 'formatOL', 'formatUL', 'paragraphFormat', 'paragraphStyle', 'lineHeight', 'outdent', 'indent', 'quote']
                 },
                 'moreMisc': {
-                    'buttons': ['undo', 'redo', 'fullscreen', 'print', 'getPDF', 'spellChecker', 'selectAll', 'html', 'help'],
+                    'buttons': ['undo', 'redo', 'fullscreen', 'print', 'getPDF', 'spellChecker', 'selectAll', 'html', 'help', 'link'],
                     'align': 'right',
                     'buttonsVisible': 2
                 }
@@ -159,7 +160,7 @@ function setup_froala(id) {
                         'buttons': ['alignLeft', 'alignCenter', 'formatOLSimple', 'alignRight', 'alignJustify', 'formatOL', 'formatUL', 'paragraphFormat', 'paragraphStyle', 'lineHeight', 'outdent', 'indent', 'quote']
                     },
                     'moreMisc': {
-                        'buttons': ['undo', 'redo', 'fullscreen', 'print', 'getPDF', 'spellChecker', 'selectAll', 'html', 'help'],
+                        'buttons': ['undo', 'redo', 'fullscreen', 'print', 'getPDF', 'spellChecker', 'selectAll', 'html', 'help', 'link'],
                         'align': 'right',
                         'buttonsVisible': 2
                     }
@@ -220,9 +221,13 @@ function replaceSelectedText(replacementText) {
             var linkText = document.createTextNode(replacementText);
             a.appendChild(linkText);
             a.title = replacementText;
-            a.href = "model";
-            a.onclick = () => {
+            a.href = replacementText;
+            a.onclick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
                 justPrint();
+                insertPage(replacementText);
             };
             a.classList.add('link-button');
             a.contentEditable = false;
