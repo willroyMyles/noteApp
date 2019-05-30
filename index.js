@@ -19,7 +19,6 @@ async function start() {
     var db = control.db;
 
 
-
     //set up routes
 
     app.get('/index', (req, res) => {
