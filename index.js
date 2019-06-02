@@ -15,8 +15,7 @@ async function start() {
     console.log("listening on port " + port);
 
     var control = require('./controllers/databaseController');
-    await control();
-    var db = control.db;
+    control(app);
 
 
     //set up routes
@@ -28,10 +27,6 @@ async function start() {
     app.get('/', (req, res) => {
         console.log(req.ip)
         res.render('index');
-    });
-
-    app.post('/save', bodyParser, (req, res) => {
-        control.savePage(req.body.pageName, req.body.page);
     });
 
 }
