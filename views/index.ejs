@@ -225,12 +225,36 @@
         console.log("just printing some text");
     }
 
+    function savePageToDatabase(pageName, page) {
+        var item = {
+            page: page,
+            pageName: pageName
+        };
+        $.ajax({
+            type: 'POST',
+            url: '/save',
+            data: item,
+            success: function(data) {
+                //do something with the data via front-end framework
+
+            }
+        });
+    }
+
 
 
 
     function onPageLoad() {
         var bareBones = document.getElementById('body').innerHTML;
         var refreshNeeded = false;
+
+        var page = $('select')
+        page.click((e) => {
+            beforePageName = page.val();
+            beforeBody = document.getElementById('body').innerHTML;
+            savePageToDatabase(beforePageName, beforeBody);
+        });
+
 
         $('#' + currentPage).dblclick(() => {
             var id = $('.draggable').length + 1;

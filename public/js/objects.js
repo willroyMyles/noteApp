@@ -5,3 +5,6 @@ var pageList = ['origin'];
 var currentPage = 'origin';
 var editor;
 var body;
+var pageName;
+var beforeBody;
+var beforePageName;

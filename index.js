@@ -31,7 +31,7 @@ async function start() {
     });
 
     app.post('/save', bodyParser, (req, res) => {
-        console.log(req.body);
+        control.savePage(req.body.pageName, req.body.page);
     });
 
 }
