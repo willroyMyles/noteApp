@@ -227,12 +227,13 @@ function replaceSelectedText(replacementText) {
                 e.stopPropagation();
                 e.stopImmediatePropagation();
                 justPrint();
-                insertPage(replacementText);
+                //insertPage(replacementText);
             };
             a.classList.add('link-button');
             a.contentEditable = false;
 
             range.insertNode(a);
+            insertPage(replacementText);
         }
     } else if (document.selection && document.selection.createRange) {
         range = document.selection.createRange();

@@ -43,7 +43,7 @@
 <body id="body">
     <header class="header">
         <div class="button-toolbar">
-            <select name="select" id="head_select" class="select">
+            <select name="select" id="head_select" class="select" onchange="valueChanged()">
                 <option value="origin">origin</option>
             </select>
         </div>
@@ -67,7 +67,12 @@
 </body>
 
 <script>
-    body = document.getElementById('body').innerHTML;;
+    body = document.getElementById('body').innerHTML;
+
+    async function valueChanged() {
+        var page = $('select').val();
+        console.log(page);
+    }
 
     async function setUpEditor() {
         editor = await console.log(setup_froala());
